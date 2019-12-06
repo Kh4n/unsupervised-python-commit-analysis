@@ -203,7 +203,6 @@ class RepoParser():
             file_types_embedding,
             is_new,
 
-            dist_from_init,
             new_name_counts,
             num_diffs,
             num_hunks_in_diff,
@@ -213,6 +212,7 @@ class RepoParser():
             num_lines_code_edited,
             average_dists,
             *top_n_names_counts,
+            dist_from_init,
         )
 
         lens = [len(k) for k in all_columns]

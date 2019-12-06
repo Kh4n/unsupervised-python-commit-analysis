@@ -18,7 +18,7 @@ tgen,_ = dg.DiffAutencoderBasic.create_data_generators(
     batch_size=1, val_split=0.0, shuffle=False
 )
 
-model = tf.keras.models.load_model("django_autoencoder_larg2.h5")
+model = tf.keras.models.load_model("django_autoencoder_larg2nt.h5")
 print(model.summary())
 
 with open("OUT", "w") as f:

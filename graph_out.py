@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-with open("larg2_output", 'r') as f:
+with open("OUT", 'r') as f:
     nums = [float(k) for k in f.readlines()]
 
 plt.plot(nums)

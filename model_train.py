@@ -97,7 +97,7 @@ dense = layers.Dense(32, activation="relu")(complete)
 dense = layers.Dense(16, activation="relu")(dense)
 # dense = layers.Dense(32, activation="relu")(dense)
 
-out = layers.Dense(tot_cols)(dense)
+out = layers.Dense(tot_cols-1)(dense)
 # out = layers.Dense(tot_cols)(inter_out)
 
 model = tf.keras.Model(inputs=[in_data], outputs=[out])
@@ -112,7 +112,7 @@ model.compile(
 )
 
 history = model.fit_generator(
-    gen, epochs=100, validation_data=vgen, shuffle=True,
+    gen, epochs=50, validation_data=vgen, shuffle=True,
     # callbacks=[tf.keras.callbacks.TensorBoard(log_dir=logdir_name)], workers=8, use_multiprocessing=True
 )
 

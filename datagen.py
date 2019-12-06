@@ -20,6 +20,8 @@ class DiffAutencoderBasic(tf.keras.utils.Sequence):
         continuous = (self.data[index*self.batch_size:(index+1)*self.batch_size, self.ESI:] - self.mins[self.ESI:])/self.ranges[self.ESI:]
 
         y = (self.data[index*self.batch_size:(index+1)*self.batch_size] - self.mins)/self.ranges
+
+        y = np.delete(y, 6, axis=1)
         
         return np.concatenate([embed_in, continuous], axis=-1), y
     
