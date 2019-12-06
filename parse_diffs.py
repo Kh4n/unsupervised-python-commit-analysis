@@ -58,7 +58,7 @@ class RepoParser():
 
     # print(get_average_dir_dist_paths(["foo/bar/baz/a.txt", "foo/bar/baz/b.txt", "foo/bam/baz/c.txt", "wub.txt", "/wub/txt/wub.txt"]))
 
-    def parse_commit(self, diffs, commit_dist_from_origin):
+    def parse_commit(self, diffs, commit_dist_from_init):
         N_top = 5
         old_paths = []
         new_paths = []
@@ -72,7 +72,7 @@ class RepoParser():
         file_types_embedding = []
         is_new = []
 
-        dist_from_origin = []
+        dist_from_init = []
         new_name_counts = []
         num_diffs = []
         num_hunks_in_diff = []
@@ -102,7 +102,7 @@ class RepoParser():
                 file_types_embedding.append(self.file_types["embedding"][ext])
 
                 diff_count += 1
-                dist_from_origin.append(commit_dist_from_origin)
+                dist_from_init.append(commit_dist_from_init)
 
 
                 if old_path not in self.paths["embedding"]:
@@ -203,7 +203,7 @@ class RepoParser():
             file_types_embedding,
             is_new,
 
-            dist_from_origin,
+            dist_from_init,
             new_name_counts,
             num_diffs,
             num_hunks_in_diff,
@@ -242,28 +242,28 @@ class RepoParser():
 
         if commit_from is None:
             all_commits = subprocess.check_output(["git", self.git_dir, "rev-list", commit_to]).decode("utf-8").splitlines()[:-1]
-            commits_from_origin = 0
+            commits_from_init = 0
         else:
             all_commits = subprocess.check_output(["git", self.git_dir, "rev-list", commit_from + ".." + commit_to]).decode("utf-8").splitlines()
-            commits_from_origin = int(subprocess.check_output(["git", self.git_dir, "rev-list", "--count", commit_from]))
+            commits_from_init = int(subprocess.check_output(["git", self.git_dir, "rev-list", "--count", commit_from]))
         all_commits.reverse()
         
         diffs_processed = 0
         for commit in all_commits:
             rows = []
             diffs = subprocess.check_output(["git", self.git_dir, "diff", commit + '~', commit, "-U0"]).decode("ISO-8859-1")
-            for row in self.parse_commit(diffs, commits_from_origin):
+            for row in self.parse_commit(diffs, commits_from_init):
                 if len(row) > 0:
                     out_h5["diff_features"][diffs_processed] = [float(k) for k in row]
                     diffs_processed += 1
                     if diffs_processed % 1000 == 0:
                         out_h5["diff_features"].resize(diffs_processed+1000, 0)
-            commits_from_origin += 1
-            if commits_from_origin % 100 == 0:
-                print("Completed", commits_from_origin, "commits")
+            commits_from_init += 1
+            if commits_from_init % 100 == 0:
+                print("Completed", commits_from_init, "commits")
 
         out_h5["diff_features"].resize(diffs_processed, 0)
-        print("Completed", commits_from_origin, "commits")
+        print("Completed", commits_from_init, "commits")
 
         if self.has_loaded_pickle:
             print("Skipping embedding adjustment to prevent existing embeddings from shifting")
@@ -296,7 +296,7 @@ def main():
     arg_parser.add_argument("out_h5", type=str, help="the output h5 file name")
     arg_parser.add_argument("out_embedding_info", type=str, help="the output file for all the embedding")
     arg_parser.add_argument("--from_commit", type=str, default=None, help="the commit to start from, defaults to initial commit")
-    arg_parser.add_argument("--to_commit", type=str, default="origin", help="the commit to go up to, defaults to origin")
+    arg_parser.add_argument("--to_commit", type=str, default="origin", help="the commit to go up to, defaults to origin. use HEAD if you've modified the repo locally")
     arg_parser.add_argument("--pickle_file", type=str, default=None, help="embedding data to load")
     args = arg_parser.parse_args()
 
