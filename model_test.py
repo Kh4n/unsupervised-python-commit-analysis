@@ -12,7 +12,7 @@ embed_dims_cols = [
     embed_dims["file_types"]
 ]
 
-data_test = h5py.File("django_U0_test2.h5", 'r')["diff_features"][:]
+data_test = h5py.File("django_U0.h5", 'r')["diff_features"][:]
 tgen,_ = dg.DiffAutencoderBasic.create_data_generators(
     data_test, embed_split_index, embed_dims_cols,
     batch_size=1, val_split=0.0, shuffle=False
