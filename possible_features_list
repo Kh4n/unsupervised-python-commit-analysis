@@ -1,0 +1,40 @@
+categorical:
+    old path #
+    new path #
+
+    old folder #
+    new folder #
+
+    file type #
+
+    built in library used X
+
+    type of file being edited X
+
+    is this a new file #
+
+
+continuous:
+    commits away from initial commit #
+
+    min edit distance from any existing code (this might be too complicated)
+    new names count #
+
+    average directory distance away from other files in commit #
+        eg /foo/bar/a.txt is distance 4 away from /baz/bang/b.txt
+
+    number of diffs in that commit #
+
+    length of that diff #
+
+    number of hunks in that diff #
+
+    number of times that file has been changed up until that commit #
+
+    lines of code edited #
+    lines of non-code edited X
+
+    frequencies up to that point of the top N most used symbols that are: 
+        not from lines that have not been changed
+        not built in name(def, if, import etc.)
+    set N=5 and go from there

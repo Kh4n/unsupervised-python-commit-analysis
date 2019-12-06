@@ -102,3 +102,13 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+.vscode
+django
+old_stuff
+*.h5
+*.pkl
+OUT
+paths_lut_example
+test.py
+*_commits*
