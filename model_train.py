@@ -6,7 +6,6 @@ import datagen as dg
 import time
 import os
 
-# lowest so far: 0.00335
 
 def sampling(args):
     # modified from keras website
@@ -56,40 +55,7 @@ file_type = layers.Embedding(embed_dims["file_types"], int(embed_dims["file_type
 
 is_new = layers.Lambda(lambda x: tf.expand_dims(x[:, 5], axis=-1))(in_data)
 
-
-continous_inter_dim = 6
-continous_latent_dim = 3
 continous = layers.Lambda(lambda x: x[:, embed_split_index:])(in_data)
-# intermediate_cont = layers.Dense(continous_inter_dim, activation="relu")(continous)
-# z_mean = layers.Dense(continous_latent_dim)(intermediate_cont)
-# z_log_var = layers.Dense(continous_latent_dim)(intermediate_cont)
-
-# z = layers.Lambda(sampling)([z_mean, z_log_var])
-# intermediate_cont = layers.Dense(continous_inter_dim, activation="relu")(z)
-# # cont_out = layers.Dense(10, activation="sigmoid")(intermediate_cont)
-
-
-# intermediate_path = layers.Dense(4, activation="relu")
-# inter_old_path = intermediate_path(old_path)
-# # old_path_out = layers.Dense(1, activation="sigmoid")(inter_old_path)
-
-# inter_new_path = intermediate_path(new_path)
-# # new_path_out = layers.Dense(1, activation="sigmoid")(inter_new_path)
-
-# intermediate_folder = layers.Dense(3, activation="relu")
-# inter_old_folder = intermediate_folder(old_folder)
-# # old_folder_out = layers.Dense(1, activation="sigmoid")(inter_old_folder)
-
-# inter_new_folder = intermediate_folder(new_folder)
-# # new_folder_out = layers.Dense(1, activation="sigmoid")(inter_new_folder)
-
-# # file_type_out = layers.Dense(1, activation="sigmoid")(file_type)
-
-# # out = layers.Concatenate()([old_path_out, new_path_out, old_folder_out, new_folder_out, file_type_out, cont_out])
-# complete = layers.Concatenate()([inter_old_path, inter_new_path, inter_old_folder, inter_new_folder, file_type, is_new, intermediate_cont])
-# inter_all = layers.Dense(7, activation="relu")(complete)
-# latent_all = layers.Dense(4, activation="relu")(inter_all)
-# inter_out = layers.Dense(7, activation="relu")(latent_all)
 
 complete = layers.Concatenate()([old_path, new_path, old_folder, new_folder, file_type, is_new, continous])
 
